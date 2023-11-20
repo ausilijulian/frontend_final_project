@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang='es-AR'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'> 
+        <title>Login </title>
+    </head>
+    
+    <body>
+        <form>
+            <label for="in-username">Usuario: </label>
+            <input type="text" id="in-username">
+
+            <label for="in-password">Contraseña: </label>
+            <input type="password" id="in-password">
+
+            <input type= "button" onclick="IniciarSesion()" value ="Iniciar Sesion">
+        </form>
+
+        <span id = "message"></span>
+
+    </body>
+    
+     <script>   
+     
+        window.onload = function(){
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            localStorage.removeItem('id');
+        }
+        function IniciarSesion(){
+
+            document.getElementById('message').innerHTML = " "; 
+
+            const username = document.getElementById('in-username').value;
+            const password = document.getElementById('in-password').value;
+
+            const requestOptions = {
+                method: 'POST',
+                headers:{
+                    'Content-Type' : 'application/json',
+                    'Authorization' : 'Basic ' + btoa(username + ":" + password)
+                }
+            }
+
+            fetch('http://127.0.0.1:5200/login',requestOptions)
+            .then(
+                res =>
+                {return res.json()}
+            )
+            .then(
+                resp => {console.log(resp)
+                if (resp.token){ //si existe el token
+                    localStorage.setItem('token', resp.token);
+                    localStorage.setItem('username', resp.username);
+                    localStorage.setItem('id', resp.id);
+                    document.getElementById('message').innerHTML = 'Bienvenido ' + resp.username;
+                    window.location.href = 'dashboard.html'
+                }
+                else{
+                    document.getElementById('message').innerHTML = resp.message;
+                }
+            }
+            )
+
+        }
+
+    </script>
+    
+</html>
