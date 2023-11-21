@@ -37,7 +37,7 @@ function loadClients() {
     // Agregar botón para crear un nuevo cliente
     const createClientButton = document.createElement('button');
     createClientButton.textContent = 'Crear Nuevo Cliente';
-    createClientButton.addEventListener('click', () => openCreateModal());
+    createClientButton.addEventListener('click', () => openCreateClientModal());
     createClientButton.addEventListener('click', (event) => {
         event.stopPropagation();
     });
@@ -65,7 +65,7 @@ function showClient(client) {
     // Botón de edición
     const editButton = document.createElement('button');
     editButton.textContent = 'Editar';
-    editButton.addEventListener('click', () => openEditModal(client));
+    editButton.addEventListener('click', () => openEditClientModal(client));
     editButton.addEventListener('click', (event) => {
         event.stopPropagation();
     });
@@ -132,14 +132,14 @@ function deleteClient(client){
 
 //  MODAL PARA CREAR CLIENTES
 
-function openCreateModal() {
-    const modal = document.getElementById('createModal');
-    const form = document.getElementById('createForm');
+function openCreateClientModal() {
+    const modal = document.getElementById('createClientModal');
+    const form = document.getElementById('createClientForm');
     form.reset();
 
     modal.style.display = 'block';
 
-    document.addEventListener('click', outsideCreateModalClick);
+    document.addEventListener('click', outsideCreateClientModalClick);
 
     // Aquí puedes implementar la lógica para abrir el modal de creación de cliente
     // Puedes mostrar otro modal, redirigir a una página de creación, etc.
@@ -147,29 +147,29 @@ function openCreateModal() {
 }
 
 // Nueva función para cerrar el modal si se hace clic fuera de él
-function outsideCreateModalClick(event) {
-    const modal = document.getElementById('createModal');
+function outsideCreateClientModalClick(event) {
+    const modal = document.getElementById('createClientModal');
     const isClickedInsideModal = modal.contains(event.target);
 
     if (!isClickedInsideModal) {
-        closeCreateModal();
+        closeCreateClientModal();
     }
 }
 
 
-function closeCreateModal() {
+function closeCreateClientModal() {
     console.log('Cerrando modal de creación de cliente');
-    const modal = document.getElementById('createModal');
-    document.removeEventListener('click', outsideCreateModalClick);
+    const modal = document.getElementById('createClientModal');
+    document.removeEventListener('click', outsideCreateClientModalClick);
     modal.style.display = 'none';
 }
 
 
-function saveChangesCreate() {
-    const modal = document.getElementById('createModal');
+function saveChangesCreateClient() {
+    const modal = document.getElementById('createClientModal');
     id = localStorage.getItem('id')
 
-    const formData = new FormData(document.getElementById('createForm'));
+    const formData = new FormData(document.getElementById('createClientForm'));
     const data = {};
 
      // Verifica si los campos requeridos tienen algún valor
@@ -208,7 +208,7 @@ function saveChangesCreate() {
             console.log('Cambios guardados exitosamente:', resp);
             alert('Exito al guardar los cambios');
             loadClients();
-            closeCreateModal();
+            closeCreateClientModal();
         })
         .catch(error => {
             console.error('Error al guardar cambios:', error.message);
@@ -228,41 +228,41 @@ function saveChangesCreate() {
 
 let currentClientId = null;
 
-function openEditModal(client) {
-    const modal = document.getElementById('editModal');
-    const form = document.getElementById('editForm');
+function openEditClientModal(client) {
+    const modal = document.getElementById('editClientModal');
+    const form = document.getElementById('editClientForm');
     
     currentClientId = client.id;
     // Cargar datos actuales del cliente en el formulario
-    document.getElementById('editName').value = client.name;
-    document.getElementById('editSurname').value = client.surname;
-    document.getElementById('editEmail').value = client.email;
-    document.getElementById('editDNI').value = client.dni;
+    document.getElementById('editClientName').value = client.name;
+    document.getElementById('editClientSurname').value = client.surname;
+    document.getElementById('editClientEmail').value = client.email;
+    document.getElementById('editClientDNI').value = client.dni;
 
     modal.style.display = 'block';
 
     // Agrega eventos al documento y al formulario para prevenir el cierre si se hace clic dentro del modal
-    document.addEventListener('click', outsideEditModalClick); 
+    document.addEventListener('click', outsideEditClientModalClick); 
 }
 
-function closeEditModal() {
-    const modal = document.getElementById('editModal');
-    document.removeEventListener('click', outsideEditModalClick);
+function closeEditClientModal() {
+    const modal = document.getElementById('editClientModal');
+    document.removeEventListener('click', outsideEditClientModalClick);
     modal.style.display = 'none';
     currentClientId = null;
 }
 
 
-function saveChangesEdit() {
+function saveChangesEditClient() {
     
-    const modal = document.getElementById('editModal');
+    const modal = document.getElementById('editClientModal');
     id = localStorage.getItem('id')
 
     if (currentClientId !== null) {
         id_client = currentClientId
     }
 
-    const formData = new FormData(document.getElementById('editForm'));
+    const formData = new FormData(document.getElementById('editClientForm'));
     const data = {};
 
      // Verifica si los campos requeridos tienen algún valor
@@ -302,7 +302,7 @@ function saveChangesEdit() {
             console.log('Cambios guardados exitosamente:', resp);
             alert('Exito al guardar los cambios');
             loadClients();
-            closeEditModal();
+            closeEditClientModal();
         })
         .catch(error => {
             console.error('Error al guardar cambios:', error.message);
@@ -319,12 +319,12 @@ function saveChangesEdit() {
 
 
 // Nueva función para cerrar el modal si se hace clic fuera de él
-function outsideEditModalClick(event) {
-    const modal = document.getElementById('editModal');
+function outsideEditClientModalClick(event) {
+    const modal = document.getElementById('editClientModal');
     const isClickedInsideModal = modal.contains(event.target);
 
     if (!isClickedInsideModal) {
-        closeEditModal();
+        closeEditClientModal();
     }
 }
 

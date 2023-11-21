@@ -14,64 +14,158 @@
         <ul>
             <li><a href="#" onclick="loadClients()">Clientes</a></li>
             <li><a href="#" onclick="loadReceipts()">Facturas</a></li>
-            <li><a href="#" onclick="loadProducts()">Productos</a></li>
+            <li><a href="#" onclick="loadProductService()">Productos y Servicios</a></li>
         </ul>
     </nav>
 
     <main id="main-content">
 
     </main>
-
-    <div id="editModal" class="modal" style="display: none;">
+    
+    <div id="editClientModal" class="modal" style="display: none;">
         <div class="modal-content">
-            <span class="close" onclick="closeEditModal()">&times;</span>
+            <span class="close" onclick="closeEditClientModal()">&times;</span>
             <h2>Editar Cliente</h2>
-            <form id="editForm">
-                <label for="editName">Nombre:</label>
-                <input type="text" id="editName" name="name" required>
+            <form id="editClientForm">
+                <label for="editClientName">Nombre:</label>
+                <input type="text" id="editClientName" name="name" required>
 
-                <label for="editSurname">Apellido:</label>
-                <input type="text" id="editSurname" name="surname" required>
+                <label for="editClientSurname">Apellido:</label>
+                <input type="text" id="editClientSurname" name="surname" required>
 
-                <label for="editEmail">Email:</label>
-                <input type="email" id="editEmail" name="email" required>
+                <label for="editClientEmail">Email:</label>
+                <input type="email" id="editClientEmail" name="email" required>
 
-                <label for="editDNI">DNI:</label>
-                <input type="text" id="editDNI" name="dni" required>
+                <label for="editClientDNI">DNI:</label>
+                <input type="text" id="editClientDNI" name="dni" required>
 
-                <button type="button" onclick="saveChangesEdit()">Guardar Cambios</button>
+                <button type="button" onclick="saveChangesEditClient()">Guardar Cambios</button>
             </form>
         </div>
     </div>
 
 
 
-    <div id="createModal" class="modal" style="display: none;">
+    <div id="createClientModal" class="modal" style="display: none;">
         <div class="modal-content">
-            <span class="close" onclick="closeCreateModal()">&times;</span>
+            <span class="close" onclick="closeCreateClientModal()">&times;</span>
             <h2>Crear Cliente</h2>
-            <form id="createForm">
-                <label for="createName">Nombre:</label>
-                <input type="text" id="createName" name="name" required>
+            <form id="createClientForm">
+                <label for="createClientName">Nombre:</label>
+                <input type="text" id="createClientName" name="name" required>
 
-                <label for="createSurname">Apellido:</label>
-                <input type="text" id="createSurname" name="surname" required>
+                <label for="createClientSurname">Apellido:</label>
+                <input type="text" id="createClientSurname" name="surname" required>
 
-                <label for="createEmail">Email:</label>
-                <input type="email" id="createEmail" name="email" required>
+                <label for="createClientEmail">Email:</label>
+                <input type="email" id="createClientEmail" name="email" required>
 
-                <label for="createDNI">DNI:</label>
-                <input type="text" id="createDNI" name="dni" required>
+                <label for="createClientDNI">DNI:</label>
+                <input type="text" id="createClientDNI" name="dni" required>
 
-                <button type="button" onclick="saveChangesCreate()">Guardar Cambios</button>
+                <button type="button" onclick="saveChangesCreateClient()">Guardar Cambios</button>
             </form>
         </div>
     </div>
+
+
+    <div id="editProductServiceModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditProductServiceModal()">&times;</span>
+            <h2>Editar Productos y Servicios</h2>
+            <form id="editProductServiceForm">
+                <label for="editProductServicetName">Nombre:</label>
+                <input type="text" id="editProductServiceName" name="name" required>
+
+                <label for="editProductServiceStock">Stock:</label>
+                <input type="text" id="editProductServiceStock" name="stock" required>
+
+                <label for="editProductServicePrice">Precio:</label>
+                <input type="text" id="editProductServicePrice" name="price" required>
+
+                <label for="editProductServiceDescription">Descripcion:</label>
+                <input type="text" id="editProductServiceDescription" name="description" required>
+
+                <label for="editProductServiceImg">Imagen:</label>
+                <input type="text" id="editProductServiceImg" name="img" required>
+
+                <label for="editProductServiceType">Tipo:</label>
+                <input type="text" id="editProductServiceType" name="type" required>
+
+                <button type="button" onclick="saveChangesEditProductService()">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div id="createProductServiceModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeCreateProductServiceModal()">&times;</span>
+            <h2>Crear Productos y Servicios</h2>
+            <form id="createProductServiceForm">
+                <label for="createProductServiceName">Nombre:</label>
+                <input type="text" id="createProductServiceName" name="name" required>
+    
+                <label for="createProductServiceStock">Stock:</label>
+                <input type="number" id="createProductServiceStock" name="stock" required>
+    
+                <label for="createProductServicePrice">Precio:</label>
+                <input type="number" id="createProductServicePrice" name="price" required>
+    
+                <label for="createProductServiceDescription">Descripción:</label>
+                <input type="text" id="createProductServiceDescription" name="description" required>
+    
+                <label for="createProductServiceImg">Imagen:</label>
+                <input type="text" id="createProductServiceImg" name="img" required>
+    
+                <label for="createProductServiceType">Tipo:</label>
+                <select id="createProductServiceType" name="type" required onchange="handleCreateProductServiceTypeChange()">
+                    <option value="Producto">Producto</option>
+                    <option value="Servicio">Servicio</option>
+                </select>
+    
+                <button type="button" onclick="saveChangesCreateProductService()">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+    
+
+    <div id="editProductServiceModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditProductServiceModal()">&times;</span>
+            <h2>Editar Productos y Servicios</h2>
+            <form id="editProductServiceForm">
+                <label for="editProductServicetName">Nombre:</label>
+                <input type="text" id="editProductServiceName" name="name" required>
+
+                <label for="editProductServiceStock">Stock:</label>
+                <input type="number" id="editProductServiceStock" name="stock" required>
+
+                <label for="editProductServicePrice">Precio:</label>
+                <input type="number" id="editProductServicePrice" name="price" required>
+
+                <label for="editProductServiceDescription">Descripcion:</label>
+                <input type="text" id="editProductServiceDescription" name="description" required>
+
+                <label for="editProductServiceImg">Imagen:</label>
+                <input type="text" id="editProductServiceImg" name="img" required>
+
+                <label for="editProductServiceType">Tipo:</label>
+                <input type="text" id="editProductServiceType" name="type" required>
+
+                <button type="button" onclick="saveChangesEditProductService()">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+
+  
 
 
 </body>
 
 <script src="clients.js"></script>
+<script src="products.js"></script>
 
 <script>
 
