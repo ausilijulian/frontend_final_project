@@ -22,13 +22,13 @@ function loadProductService() {
     )
     .then(
         resp => {
-            if (resp.length > 0){
+            if (resp.length >= 0){
                 resp.forEach(product_service => {
                     showProductService(product_service);
                 });
             }
             else {
-                console.log('tiempo expirado');
+                alert('Tiempo Expirado');
                 window.location.href = 'login.html';
             }
         }
@@ -106,15 +106,6 @@ function showProductService(product_service) {
 
 
 
-
-
-
-
-
-
-
-
-
 //ELIMINAR PRODUCTO Y SERVICIO
 function deleteProductService(product_service){
 
@@ -151,7 +142,14 @@ function deleteProductService(product_service){
             if (error.message.includes('Bad Request')) {
                 // Manejar el error 400 específico
                 alert('Error 400: ' + error.message);
-            } else {
+            } 
+            else if (error.message.includes('401')) {
+                // Manejar el error 401 (No autorizado)
+                alert('Error 401: Tiempo de sesión expirado. Vuelve a iniciar sesión.');
+                // Redirigir al formulario de inicio de sesión u otra acción apropiada
+                window.location.href = 'login.html';
+            }
+            else {
                 // Manejar otros errores
                 alert('Error al guardar cambios: ' + error.message);
             }
@@ -226,7 +224,7 @@ function saveChangesCreateProductService() {
         }
     }
 
-
+    
     data.stock = parseInt(formData.get('stock'));
     data.price = parseFloat(formData.get('price'));
    
@@ -266,7 +264,15 @@ function saveChangesCreateProductService() {
             if (error.message.includes('Bad Request')) {
                 // Manejar el error 400 específico
                 alert('Error 400: ' + error.message);
-            } else {
+            } 
+            
+            else if (error.message.includes('401')) {
+                // Manejar el error 401 (No autorizado)
+                alert('Error 401: Tiempo de sesión expirado. Vuelve a iniciar sesión.');
+                // Redirigir al formulario de inicio de sesión u otra acción apropiada
+                window.location.href = 'login.html';
+            }
+            else {
                 // Manejar otros errores
                 alert('Error al guardar cambios: ' + error.message);
             }
@@ -393,7 +399,15 @@ function saveChangesEditProductService() {
             if (error.message.includes('Bad Request')) {
                 // Manejar el error 400 específico
                 alert('Error 400: ' + error.message);
-            } else {
+            } 
+            else if (error.message.includes('401')) {
+                // Manejar el error 401 (No autorizado)
+                alert('Error 401: Tiempo de sesión expirado. Vuelve a iniciar sesión.');
+                // Redirigir al formulario de inicio de sesión u otra acción apropiada
+                window.location.href = 'login.html';
+            }
+            
+            else {
                 // Manejar otros errores
                 alert('Error al guardar cambios: ' + error.message);
             }

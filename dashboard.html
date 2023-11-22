@@ -158,14 +158,48 @@
         </div>
     </div>
 
+<!-- Modal para crear factura -->
+    <div id="createReceiptModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeCreateReceiptModal()">&times;</span>
+            <h2>Crear Nueva Factura</h2>
+            <form id="createReceiptForm">
+                <label for="createReceiptCode">Código:</label>
+                <input type="text" id="createReceiptCode" name="code" required>
 
-  
+                <label for="createReceiptDate">Fecha:</label>
+                <input type="date" id="createReceiptDate" name="date" required>
+
+                <label for="createReceiptClient">Cliente:</label>
+                <select id="createReceiptClient" name="client" required>
+                    <!-- Opciones de clientes se llenarán dinámicamente con JavaScript -->
+                </select>
+
+                <label for="createReceiptProduct">Producto:</label>
+                <select id="createReceiptProduct" name="product" required>
+                    <!-- Opciones de productos se llenarán dinámicamente con JavaScript -->
+                </select>
+
+                <label for="createReceiptQuantity">Cantidad:</label>
+                <input type="number" id="createReceiptQuantity" name="quantity" required>
+
+                <button type="button" onclick="addProductToReceipt()">Agregar Producto</button>
+                
+                <!-- Mostrar la lista de productos agregados -->
+                <div id="addedProducts"></div>
+
+                <button type="button" onclick="saveReceipt()">Guardar Factura</button>
+            </form>
+        </div>
+    </div>
+    
 
 
 </body>
 
 <script src="clients.js"></script>
 <script src="products.js"></script>
+<script src="receipts.js"></script>
 
 <script>
 

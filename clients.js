@@ -22,13 +22,13 @@ function loadClients() {
     )
     .then(
         resp => {
-            if (resp.length > 0){
+            if (resp.length >= 0){
                 resp.forEach(client => {
                     showClient(client);
                 });
             }
             else {
-                console.log('tiempo expirado');
+                alert('Tiempo Expirado');
                 window.location.href = 'login.html';
             }
         }
@@ -122,7 +122,15 @@ function deleteClient(client){
             if (error.message.includes('Bad Request')) {
                 // Manejar el error 400 específico
                 alert('Error 400: ' + error.message);
-            } else {
+            } 
+            else if (error.message.includes('401')) {
+                // Manejar el error 401 (No autorizado)
+                alert('Error 401: Tiempo de sesión expirado. Vuelve a iniciar sesión.');
+                // Redirigir al formulario de inicio de sesión u otra acción apropiada
+                window.location.href = 'login.html';
+            }
+            
+            else {
                 // Manejar otros errores
                 alert('Error al guardar cambios: ' + error.message);
             }
@@ -216,7 +224,15 @@ function saveChangesCreateClient() {
             if (error.message.includes('Bad Request')) {
                 // Manejar el error 400 específico
                 alert('Error 400: ' + error.message);
-            } else {
+            } 
+            else if (error.message.includes('401')) {
+                // Manejar el error 401 (No autorizado)
+                alert('Error 401: Tiempo de sesión expirado. Vuelve a iniciar sesión.');
+                // Redirigir al formulario de inicio de sesión u otra acción apropiada
+                window.location.href = 'login.html';
+            }
+
+            else {
                 // Manejar otros errores
                 alert('Error al guardar cambios: ' + error.message);
             }
@@ -310,7 +326,15 @@ function saveChangesEditClient() {
             if (error.message.includes('Bad Request')) {
                 // Manejar el error 400 específico
                 alert('Error 400: ' + error.message);
-            } else {
+            } 
+            else if (error.message.includes('401')) {
+                // Manejar el error 401 (No autorizado)
+                alert('Error 401: Tiempo de sesión expirado. Vuelve a iniciar sesión.');
+                // Redirigir al formulario de inicio de sesión u otra acción apropiada
+                window.location.href = 'login.html';
+            }
+            
+            else {
                 // Manejar otros errores
                 alert('Error al guardar cambios: ' + error.message);
             }
