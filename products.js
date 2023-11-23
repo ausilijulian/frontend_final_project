@@ -37,6 +37,7 @@ function loadProductService() {
     // Agregar botón para crear un nuevo ProductService
     const createProductServiceButton = document.createElement('button');
     createProductServiceButton.textContent = 'Crear Nuevo Producto o Servicio';
+    createProductServiceButton.classList.add('btn', 'btn-primary', 'mb-3'); // Agregar clases de Bootstrap
     createProductServiceButton.addEventListener('click', () => openCreateProductServiceModal());
     createProductServiceButton.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -50,34 +51,46 @@ function showProductService(product_service) {
     const mainContent = document.getElementById('main-content');
 
     const productServiceContainer = document.createElement('div');
-    productServiceContainer.className = 'product-service-container';
+    productServiceContainer.className = 'col-md-4 mb-3'; // Dividir en 3 columnas en pantallas medianas y grandes
+
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body';
 
     const productServiceName = document.createElement('h2');
+    productServiceName.className = 'card-title';
     productServiceName.textContent = `${product_service.name}`;
 
     const productServiceStock = document.createElement('p');
+    productServiceStock.className = 'card-text';
     productServiceStock.textContent = `Stock: ${parseInt(product_service.stock)}`;
 
-     // Verificar si el tipo es "Servicio" para ocultar el elemento
+    // Verificar si el tipo es "Servicio" para ocultar el elemento
     if (product_service.type === 'Servicio') {
         productServiceStock.style.display = 'none';
     }
 
-
     const productServicePrice = document.createElement('p');
+    productServicePrice.className = 'card-text';
     productServicePrice.textContent = `Precio: ${parseFloat(product_service.price).toFixed(2)}`;
 
     const productServiceDescription = document.createElement('p');
+    productServiceDescription.className = 'card-text';
     productServiceDescription.textContent = `${product_service.description}`;
 
     const productServiceImg = document.createElement('p');
+    productServiceImg.className = 'card-text';
     productServiceImg.textContent = `${product_service.img}`;
 
     const productServiceType = document.createElement('p');
+    productServiceType.className = 'card-text';
     productServiceType.textContent = `${product_service.type}`;
 
     // Botón de edición
     const editButton = document.createElement('button');
+    editButton.className = 'btn btn-primary me-2';
     editButton.textContent = 'Editar';
     editButton.addEventListener('click', () => openEditProductServiceModal(product_service));
     editButton.addEventListener('click', (event) => {
@@ -85,20 +98,21 @@ function showProductService(product_service) {
     });
 
     const deleteButton = document.createElement('button');
+    deleteButton.className = 'btn btn-danger';
     deleteButton.textContent = 'Eliminar';
     deleteButton.addEventListener('click', () => deleteProductService(product_service));
-  
 
-    productServiceContainer.appendChild(productServiceName);
-    productServiceContainer.appendChild(productServiceStock);
-    productServiceContainer.appendChild(productServicePrice);
-    productServiceContainer.appendChild(productServiceDescription);
-    productServiceContainer.appendChild(productServiceImg);
-    productServiceContainer.appendChild(productServiceType);
+    cardBody.appendChild(productServiceName);
+    cardBody.appendChild(productServiceStock);
+    cardBody.appendChild(productServicePrice);
+    cardBody.appendChild(productServiceDescription);
+    cardBody.appendChild(productServiceImg);
+    cardBody.appendChild(productServiceType);
+    cardBody.appendChild(editButton);
+    cardBody.appendChild(deleteButton);
 
-
-    productServiceContainer.appendChild(editButton);
-    productServiceContainer.appendChild(deleteButton);
+    card.appendChild(cardBody);
+    productServiceContainer.appendChild(card);
     mainContent.appendChild(productServiceContainer);
 }
 
@@ -174,14 +188,25 @@ function openCreateProductServiceModal() {
 }
 
 // Nueva función para cerrar el modal si se hace clic fuera de él
-function outsideCreateProductServiceModalClick(event) {
-    const modal = document.getElementById('createProductServiceModal');
-    const isClickedInsideModal = modal.contains(event.target);
+// function outsideCreateProductServiceModalClick(event) {
+//     const modal = document.getElementById('createProductServiceModal');
+//     const isClickedInsideModal = modal.contains(event.target);
 
-    if (!isClickedInsideModal) {
+//     if (!isClickedInsideModal) {
+//         closeCreateProductServiceModal();
+//     }
+// }
+
+function outsideCreateProductServiceModalClick(event) {
+    const modalContent = document.querySelector('.modal-content');
+    const createProductServiceForm = document.getElementById('createProductServiceForm');
+    
+    // Verifica si se hizo clic fuera del formulario
+    if (!modalContent.contains(event.target) && !createProductServiceForm.contains(event.target)) {
         closeCreateProductServiceModal();
     }
 }
+
 
 
 function closeCreateProductServiceModal() {
@@ -277,6 +302,7 @@ function saveChangesCreateProductService() {
                 alert('Error al guardar cambios: ' + error.message);
             }
         });
+        loadClientsAndProducts();
 }
 
 
@@ -412,15 +438,26 @@ function saveChangesEditProductService() {
                 alert('Error al guardar cambios: ' + error.message);
             }
         });  
+        
 }
 
 
 // Nueva función para cerrar el modal si se hace clic fuera de él
-function outsideEditProductServiceModalClick(event) {
-    const modal = document.getElementById('editProductServiceModal');
-    const isClickedInsideModal = modal.contains(event.target);
+// function outsideEditProductServiceModalClick(event) {
+//     const modal = document.getElementById('editProductServiceModal');
+//     const isClickedInsideModal = modal.contains(event.target);
 
-    if (!isClickedInsideModal) {
+//     if (!isClickedInsideModal) {
+//         closeEditProductServiceModal();
+//     }
+// }
+
+function outsideEditProductServiceModalClick(event) {
+    const modalContent = document.querySelector('.modal-content');
+    const editProductServiceForm = document.getElementById('editProductServiceForm');
+    
+    // Verifica si se hizo clic fuera del formulario
+    if (!modalContent.contains(event.target) && !editProductServiceForm.contains(event.target)) {
         closeEditProductServiceModal();
     }
 }

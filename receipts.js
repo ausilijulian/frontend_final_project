@@ -37,6 +37,7 @@ function loadReceipts() {
     // Agregar botón para crear un nuevo cliente
     const createReceiptButton = document.createElement('button');
     createReceiptButton.textContent = 'Crear Nueva Factura';
+    createReceiptButton.classList.add('btn', 'btn-primary', 'mb-3'); // Agregar clases de Bootstrap
     createReceiptButton.addEventListener('click', () => openCreateReceiptModal());
     createReceiptButton.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -50,18 +51,28 @@ function showReceipt(receipt) {
     const mainContent = document.getElementById('main-content');
 
     const receiptContainer = document.createElement('div');
-    receiptContainer.className = 'receipt-container';
+    receiptContainer.className = 'col-md-4 mb-3'; // Dividir en 3 columnas en pantallas medianas y grandes
+
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body';
 
     const receiptDate = document.createElement('h2');
+    receiptDate.className = 'card-title';
     receiptDate.textContent = `Fecha: ${new Date(receipt.date).toLocaleDateString()}`;
 
     const receiptCode = document.createElement('p');
+    receiptCode.className = 'card-text';
     receiptCode.textContent = `Código: ${receipt.code}`;
 
     const receiptSurnameClient = document.createElement('p');
+    receiptSurnameClient.className = 'card-text';
     receiptSurnameClient.textContent = `Apellido: ${receipt.surname_client}`;
 
     const receiptNameClient = document.createElement('p');
+    receiptNameClient.className = 'card-text';
     receiptNameClient.textContent = `Nombre: ${receipt.name_client}`;
 
     const receiptDetails = document.createElement('div');
@@ -73,19 +84,24 @@ function showReceipt(receipt) {
         detailContainer.className = 'detail-container';
 
         const detailName = document.createElement('p');
+        detailName.className = 'card-text';
         detailName.textContent = `Nombre: ${detail.name}`;
 
         const detailQuantity = document.createElement('p');
+        detailQuantity.className = 'card-text';
         detailQuantity.textContent = `Cantidad: ${detail.quantity}`;
 
         const detailType = document.createElement('p');
+        detailType.className = 'card-text';
         detailType.textContent = `Tipo: ${detail.type}`;
 
         const detailUnitPrice = document.createElement('p');
+        detailUnitPrice.className = 'card-text';
         detailUnitPrice.textContent = `Precio Unitario: ${parseFloat(detail.unit_price).toFixed(2)}`;
 
         const detailTotal = document.createElement('p');
         const totalAmount = detail.quantity * parseFloat(detail.unit_price);
+        detailTotal.className = 'card-text';
         detailTotal.textContent = `Subtotal: ${totalAmount.toFixed(2)}`;
 
         detailContainer.appendChild(detailName);
@@ -103,15 +119,18 @@ function showReceipt(receipt) {
     }, 0);
 
     const receiptTotal = document.createElement('p');
+    receiptTotal.className = 'card-text';
     receiptTotal.textContent = `Total Factura: ${totalAmount.toFixed(2)}`;
 
-    receiptContainer.appendChild(receiptDate);
-    receiptContainer.appendChild(receiptCode);
-    receiptContainer.appendChild(receiptNameClient);
-    receiptContainer.appendChild(receiptSurnameClient);
-    receiptContainer.appendChild(receiptDetails);
-    receiptContainer.appendChild(receiptTotal);
+    cardBody.appendChild(receiptDate);
+    cardBody.appendChild(receiptCode);
+    cardBody.appendChild(receiptNameClient);
+    cardBody.appendChild(receiptSurnameClient);
+    cardBody.appendChild(receiptDetails);
+    cardBody.appendChild(receiptTotal);
 
+    card.appendChild(cardBody);
+    receiptContainer.appendChild(card);
     mainContent.appendChild(receiptContainer);
 }
 
@@ -139,14 +158,26 @@ function openCreateReceiptModal() {
 }
 
 
-function outsideCreateReceiptModalClick(event) {
-    const modal = document.getElementById('createReceiptModal');
-    const isClickedInsideModal = modal.contains(event.target);
+// function outsideCreateReceiptModalClick(event) {
+//     const modal = document.getElementById('createReceiptModal');
+//     const isClickedInsideModal = modal.contains(event.target);
 
-    if (!isClickedInsideModal) {
+//     if (!isClickedInsideModal) {
+//         closeCreateReceiptModal();
+//     }
+// }
+
+
+function outsideCreateReceiptModalClick(event) {
+    const modalContent = document.querySelector('.modal-content');
+    const createReceiptForm = document.getElementById('createReceiptForm');
+    
+    // Verifica si se hizo clic fuera del formulario
+    if (!modalContent.contains(event.target) && !createReceiptForm.contains(event.target)) {
         closeCreateReceiptModal();
     }
 }
+
 
 function closeCreateReceiptModal() {
     const modal = document.getElementById('createReceiptModal');
@@ -204,16 +235,7 @@ function loadClientsAndProducts() {
     .catch(error => console.error('Error loading clients:', error));
 
 
-    const requestOptions2 = {
-        method: 'GET',
-        headers: {
-            'Content-Type' : 'application/json',
-            'x-access-token' : token,
-            'user-id': id,
-        }
-    }
-
-    fetch(`http://127.0.0.1:5200/user/${id}/product_service`, requestOptions2)
+    fetch(`http://127.0.0.1:5200/user/${id}/product_service`, requestOptions)
     .then(
         resp => {return resp.json()}
     )

@@ -37,6 +37,7 @@ function loadClients() {
     // Agregar botón para crear un nuevo cliente
     const createClientButton = document.createElement('button');
     createClientButton.textContent = 'Crear Nuevo Cliente';
+    createClientButton.classList.add('btn', 'btn-primary', 'mb-3'); // Agregar clases de Bootstrap
     createClientButton.addEventListener('click', () => openCreateClientModal());
     createClientButton.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -50,20 +51,29 @@ function showClient(client) {
     const mainContent = document.getElementById('main-content');
 
     const clientContainer = document.createElement('div');
-    clientContainer.className = 'client-container';
+    clientContainer.className = 'col-md-4 mb-3'; // Dividir en 3 columnas en pantallas medianas y grandes
+
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body';
 
     const clientName = document.createElement('h2');
+    clientName.className = 'card-title';
     clientName.textContent = `${client.name} ${client.surname}`;
 
     const clientDNI = document.createElement('p');
+    clientDNI.className = 'card-text';
     clientDNI.textContent = `DNI: ${client.dni}`;
-    // clientDNI.textContent = `DNI: ${parseInt(client.dni)}`;
 
     const clientEmail = document.createElement('p');
+    clientEmail.className = 'card-text';
     clientEmail.textContent = `Email: ${client.email}`;
 
     // Botón de edición
     const editButton = document.createElement('button');
+    editButton.className = 'btn btn-primary me-2';
     editButton.textContent = 'Editar';
     editButton.addEventListener('click', () => openEditClientModal(client));
     editButton.addEventListener('click', (event) => {
@@ -71,18 +81,20 @@ function showClient(client) {
     });
 
     const deleteButton = document.createElement('button');
+    deleteButton.className = 'btn btn-danger';
     deleteButton.textContent = 'Eliminar';
     deleteButton.addEventListener('click', () => deleteClient(client));
-  
 
-    clientContainer.appendChild(clientName);
-    clientContainer.appendChild(clientDNI);
-    clientContainer.appendChild(clientEmail);
-    clientContainer.appendChild(editButton);
-    clientContainer.appendChild(deleteButton);
+    cardBody.appendChild(clientName);
+    cardBody.appendChild(clientDNI);
+    cardBody.appendChild(clientEmail);
+    cardBody.appendChild(editButton);
+    cardBody.appendChild(deleteButton);
+
+    card.appendChild(cardBody);
+    clientContainer.appendChild(card);
     mainContent.appendChild(clientContainer);
 }
-
 
 
 
@@ -156,13 +168,17 @@ function openCreateClientModal() {
 
 // Nueva función para cerrar el modal si se hace clic fuera de él
 function outsideCreateClientModalClick(event) {
-    const modal = document.getElementById('createClientModal');
-    const isClickedInsideModal = modal.contains(event.target);
-
-    if (!isClickedInsideModal) {
+    const modalContent = document.querySelector('.modal-content');
+    const createClientForm = document.getElementById('createClientForm');
+    
+    // Verifica si se hizo clic fuera del formulario
+    if (!modalContent.contains(event.target) && !createClientForm.contains(event.target)) {
         closeCreateClientModal();
     }
 }
+
+
+
 
 
 function closeCreateClientModal() {
@@ -237,6 +253,8 @@ function saveChangesCreateClient() {
                 alert('Error al guardar cambios: ' + error.message);
             }
         });
+
+        loadClientsAndProducts();
 }
 
 
@@ -342,16 +360,15 @@ function saveChangesEditClient() {
 }
 
 
-// Nueva función para cerrar el modal si se hace clic fuera de él
-function outsideEditClientModalClick(event) {
-    const modal = document.getElementById('editClientModal');
-    const isClickedInsideModal = modal.contains(event.target);
+// // Nueva función para cerrar el modal si se hace clic fuera de él
 
-    if (!isClickedInsideModal) {
+function outsideEditClientModalClick(event) {
+    const modalContent = document.querySelector('.modal-content');
+    const editClientForm = document.getElementById('editClientForm');
+    
+    // Verifica si se hizo clic fuera del formulario
+    if (!modalContent.contains(event.target) && !editClientForm.contains(event.target)) {
         closeEditClientModal();
     }
 }
-
-
-
 
