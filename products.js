@@ -57,7 +57,9 @@ function loadProductService(orderBy) {
                 resp.sort((a, b) => (orderBy === 'asc') ? a.stock - b.stock : b.stock - a.stock);
 
                 resp.forEach(product_service => {
-                    showProductService(product_service);
+                    if (!orderBy || (orderBy && product_service.type !== 'Servicio')) {
+                        showProductService(product_service);
+                    }
                 });
             }
             else {
