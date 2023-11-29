@@ -1,11 +1,35 @@
 //Cargar Facturas
+let selectedDate = '';
 
-function loadReceipts() {
+function loadReceipts(selectDate) {
     clearMain();
 
     const mainContent = document.getElementById('main-content');
     const id = localStorage.getItem('id');
     const token = localStorage.getItem('token');
+
+    // Crear el desplegable de fechas
+    const dateFilter = document.createElement('input');
+    dateFilter.type = 'date';
+    dateFilter.id = 'dateFilter';
+    dateFilter.classList.add('form-control'); // Agregar clase de Bootstrap
+
+    // Crear el botón de filtro
+    const filterButton = document.createElement('button');
+    filterButton.textContent = selectedDate ? 'Mostrar Todas' : 'Filtrar por Fecha';
+    filterButton.classList.add('btn', 'btn-primary', 'mb-3'); // Agregar clases de Bootstrap
+    filterButton.addEventListener('click', () => {
+        const newDate = dateFilter.value;
+        if (newDate !== selectedDate) {
+            selectedDate = newDate;
+            filterReceiptsByDate();
+        }
+    });
+
+    mainContent.appendChild(dateFilter);
+    mainContent.appendChild(filterButton);
+
+  
 
     const requestOptions = {
         method: 'GET',
@@ -20,17 +44,24 @@ function loadReceipts() {
     .then(
         resp => {return resp.json()}
     )
-    .then(
-        resp => {
-            if (resp.length >= 0){
-                resp.forEach(receipt => {
-                    showReceipt(receipt);
-                });
-            }
-            else {
-                alert('Tiempo Expirado');
-                window.location.href = 'login.html';
-            }
+    .then(resp => {
+        // Filtrar las facturas por la fecha seleccionada
+        const filteredReceipts = selectedDate
+            ? resp.filter(receipt => {
+                // Formatear la fecha de la factura al formato ISO
+                const formattedDate = new Date(receipt.date).toISOString().split('T')[0];
+                return formattedDate === selectedDate;
+            })
+            : resp;
+
+        if (filteredReceipts.length >= 0) {
+            filteredReceipts.forEach(receipt => {
+                showReceipt(receipt);
+            });
+        } else {
+            alert('Tiempo Expirado');
+            window.location.href = 'login.html';
+        }
         }
     );
 
@@ -45,6 +76,10 @@ function loadReceipts() {
     mainContent.appendChild(createReceiptButton);
 }
 
+function filterReceiptsByDate() {
+    let selectedDate = document.getElementById('dateFilter').value;
+    loadReceipts(selectedDate); 
+}
 
 
 function showReceipt(receipt) {
@@ -61,7 +96,11 @@ function showReceipt(receipt) {
 
     const receiptDate = document.createElement('h2');
     receiptDate.className = 'card-title';
-    receiptDate.textContent = `Fecha: ${new Date(receipt.date).toLocaleDateString()}`;
+    // Formatear la fecha con la zona horaria correcta
+    const formattedDate = new Date(receipt.date).toLocaleDateString('es-ES', {
+        timeZone: 'UTC', // Cambia 'UTC' a la zona horaria que desees
+    });
+    receiptDate.textContent = `Fecha: ${formattedDate}`;
 
     const receiptCode = document.createElement('p');
     receiptCode.className = 'card-text';
@@ -101,7 +140,7 @@ function showReceipt(receipt) {
 
         const detailTotal = document.createElement('p');
         const totalAmount = detail.quantity * parseFloat(detail.unit_price);
-        detailTotal.className = 'card-text';
+        detailTotal.className = 'card-text mb-3';
         detailTotal.textContent = `Subtotal: ${totalAmount.toFixed(2)}`;
 
         detailContainer.appendChild(detailName);
@@ -140,12 +179,11 @@ function showReceipt(receipt) {
 
 
 function openCreateReceiptModal() {
-    if (!clientsAndProductsLoaded) {
-        loadClientsAndProducts();
-        clientsAndProductsLoaded = true;
-    }
+   
+    loadClientsAndProducts();
+   
     
-
+    
     const modal = document.getElementById('createReceiptModal');
     const form = document.getElementById('createReceiptForm');
     
@@ -193,11 +231,15 @@ function closeCreateReceiptModal() {
 
 // Lista para almacenar los productos en la factura
 const productsInReceipt = [];
-let clientsAndProductsLoaded = false;
+// let clientsAndProductsLoaded = false;
 // Función para cargar clientes y productos al cargar el modal
 function loadClientsAndProducts() {
     const createReceiptClientSelect = document.getElementById('createReceiptClient');
     const createReceiptProductSelect = document.getElementById('createReceiptProduct');
+
+        // Limpia las opciones existentes
+    createReceiptClientSelect.innerHTML = '';
+    createReceiptProductSelect.innerHTML = '';
 
     const id = localStorage.getItem('id');
     const token = localStorage.getItem('token');
@@ -257,6 +299,7 @@ function loadClientsAndProducts() {
     )
         .catch(error => console.error('Error loading products:', error));
 }
+
 
 
 

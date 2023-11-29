@@ -119,7 +119,7 @@ function loadRankings() {
     .then(resp => resp.json())
     .then(resp => {
         console.log(resp)
-        if (resp && (Object.keys(resp.products).length > 0 || Object.keys(resp.services).length > 0)) {
+        if (resp && (Object.keys(resp.products).length >= 0 || Object.keys(resp.services).length >= 0)) {
             loadProductRanking(resp);
         } else {
             alert('Tiempo Expirado');

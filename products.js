@@ -1,11 +1,41 @@
 //CARGAR PRODUCTOS y SERVICIOS
 
-function loadProductService() {
+function loadProductService(orderBy) {
     clearMain();
 
     const mainContent = document.getElementById('main-content');
     const id = localStorage.getItem('id');
     const token = localStorage.getItem('token');
+
+     // Crear el desplegable
+     const orderSelect = document.createElement('select');
+     orderSelect.classList.add('form-select', 'mb-3');
+     orderSelect.addEventListener('change', () => {
+         const selectedOrder = orderSelect.value;
+         loadProductService(selectedOrder);
+     });
+ 
+     const defaultOption = document.createElement('option');
+     defaultOption.value = '';
+     defaultOption.text = 'Ordenar por';
+     defaultOption.disabled = true;
+     defaultOption.selected = true;
+ 
+     const ascendingOption = document.createElement('option');
+     ascendingOption.value = 'asc';
+     ascendingOption.text = 'Stock ascendente';
+ 
+     const descendingOption = document.createElement('option');
+     descendingOption.value = 'desc';
+     descendingOption.text = 'Stock descendente';
+ 
+     orderSelect.add(defaultOption);
+     orderSelect.add(ascendingOption);
+     orderSelect.add(descendingOption);
+ 
+     mainContent.appendChild(orderSelect);
+     
+     const apiUrl = `http://127.0.0.1:5200/user/${id}/product_service${orderBy ? `?order_by=${orderBy}` : ''}`;
 
     const requestOptions = {
         method: 'GET',
@@ -16,13 +46,16 @@ function loadProductService() {
         }
     }
 
-    fetch(`http://127.0.0.1:5200/user/${id}/product_service`, requestOptions)
+    fetch(apiUrl, requestOptions)
     .then(
         resp => {return resp.json()}
     )
     .then(
         resp => {
             if (resp.length >= 0){
+                // Ordenar el array por el campo 'stock' ascendente o descendente
+                resp.sort((a, b) => (orderBy === 'asc') ? a.stock - b.stock : b.stock - a.stock);
+
                 resp.forEach(product_service => {
                     showProductService(product_service);
                 });
@@ -168,6 +201,7 @@ function deleteProductService(product_service){
                 alert('Error al guardar cambios: ' + error.message);
             }
         });
+    loadClientsAndProducts();
 }
 
 
@@ -302,7 +336,7 @@ function saveChangesCreateProductService() {
                 alert('Error al guardar cambios: ' + error.message);
             }
         });
-        loadClientsAndProducts();
+    loadClientsAndProducts();
 }
 
 
@@ -438,6 +472,7 @@ function saveChangesEditProductService() {
                 alert('Error al guardar cambios: ' + error.message);
             }
         });  
+    loadClientsAndProducts();
         
 }
 

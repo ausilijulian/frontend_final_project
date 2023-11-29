@@ -32,6 +32,11 @@
                 <a class="nav-link" href="#" onclick="loadRankings()">Rankings</a>
               </li>
             </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="logout()">Log Out</a>
+                </li>
+            </ul>
           </div>
         </div>
       </nav>
@@ -358,6 +363,10 @@
             window.location.href = "login.html"
         }
     }
+
+    function logout() {
+            window.location.href = 'login.html';
+        }
 
     function clearMain() {
         document.getElementById('main-content').innerHTML = '';

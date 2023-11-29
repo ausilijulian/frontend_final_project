@@ -1,3 +1,4 @@
+
 //CARGAR CLIENTES
 
 function loadClients() {
@@ -147,6 +148,7 @@ function deleteClient(client){
                 alert('Error al guardar cambios: ' + error.message);
             }
         });
+    loadClientsAndProducts();
 }
 
 
@@ -254,7 +256,7 @@ function saveChangesCreateClient() {
             }
         });
 
-        loadClientsAndProducts();
+    loadClientsAndProducts();
 }
 
 
@@ -357,6 +359,7 @@ function saveChangesEditClient() {
                 alert('Error al guardar cambios: ' + error.message);
             }
         });  
+    loadClientsAndProducts();
 }
 
 
