@@ -38,7 +38,7 @@ function loadClients() {
     // Agregar botón para crear un nuevo cliente
     const createClientButton = document.createElement('button');
     createClientButton.textContent = 'Crear Nuevo Cliente';
-    createClientButton.classList.add('btn', 'btn-primary', 'mb-3'); // Agregar clases de Bootstrap
+    createClientButton.classList.add('btn', 'btn-primary', 'mb-3'); 
     createClientButton.addEventListener('click', () => openCreateClientModal());
     createClientButton.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -52,7 +52,7 @@ function showClient(client) {
     const mainContent = document.getElementById('main-content');
 
     const clientContainer = document.createElement('div');
-    clientContainer.className = 'col-md-4 mb-3'; // Dividir en 3 columnas en pantallas medianas y grandes
+    clientContainer.className = 'col-md-4 mb-3'; 
 
     const card = document.createElement('div');
     card.className = 'card';
@@ -131,7 +131,7 @@ function deleteClient(client){
         })
         .catch(error => {
             console.error('Error al guardar cambios:', error.message);
-            // Aquí puedes manejar diferentes tipos de errores
+            
             if (error.message.includes('Bad Request')) {
                 // Manejar el error 400 específico
                 alert('Error 400: ' + error.message);
@@ -158,29 +158,19 @@ function openCreateClientModal() {
     const modal = document.getElementById('createClientModal');
     const form = document.getElementById('createClientForm');
     form.reset();
-
     modal.style.display = 'block';
-
     document.addEventListener('click', outsideCreateClientModalClick);
-
-    // Aquí puedes implementar la lógica para abrir el modal de creación de cliente
-    // Puedes mostrar otro modal, redirigir a una página de creación, etc.
-    console.log('Abriendo modal para crear un nuevo cliente');
 }
 
-// Nueva función para cerrar el modal si se hace clic fuera de él
+//función para cerrar el modal si se hace clic fuera de él
 function outsideCreateClientModalClick(event) {
     const modalContent = document.querySelector('.modal-content');
-    const createClientForm = document.getElementById('createClientForm');
-    
+    const createClientForm = document.getElementById('createClientForm');    
     // Verifica si se hizo clic fuera del formulario
     if (!modalContent.contains(event.target) && !createClientForm.contains(event.target)) {
         closeCreateClientModal();
     }
 }
-
-
-
 
 
 function closeCreateClientModal() {
@@ -201,7 +191,7 @@ function saveChangesCreateClient() {
      // Verifica si los campos requeridos tienen algún valor
     if (!formData.get('name') || !formData.get('surname') || !formData.get('email') || !formData.get('dni')) {
         alert('Por favor, completa todos los campos.');
-        return;  // Detiene la función si algún campo está vacío
+        return;  
     }
 
     formData.forEach((value, key) => {
@@ -238,7 +228,7 @@ function saveChangesCreateClient() {
         })
         .catch(error => {
             console.error('Error al guardar cambios:', error.message);
-            // Aquí puedes manejar diferentes tipos de errores
+            
             if (error.message.includes('Bad Request')) {
                 // Manejar el error 400 específico
                 alert('Error 400: ' + error.message);
@@ -259,7 +249,6 @@ function saveChangesCreateClient() {
     loadClientsAndProducts();
 }
 
-
 // MODAL PARA EDITAR CLIENTES
 
 let currentClientId = null;
@@ -277,7 +266,7 @@ function openEditClientModal(client) {
 
     modal.style.display = 'block';
 
-    // Agrega eventos al documento y al formulario para prevenir el cierre si se hace clic dentro del modal
+    
     document.addEventListener('click', outsideEditClientModalClick); 
 }
 
@@ -304,7 +293,7 @@ function saveChangesEditClient() {
      // Verifica si los campos requeridos tienen algún valor
     if (!formData.get('name') || !formData.get('surname') || !formData.get('email') || !formData.get('dni')) {
         alert('Por favor, completa todos los campos.');
-        return;  // Detiene la función si algún campo está vacío
+        return;  
     }
 
     formData.forEach((value, key) => {
@@ -342,7 +331,7 @@ function saveChangesEditClient() {
         })
         .catch(error => {
             console.error('Error al guardar cambios:', error.message);
-            // Aquí puedes manejar diferentes tipos de errores
+            
             if (error.message.includes('Bad Request')) {
                 // Manejar el error 400 específico
                 alert('Error 400: ' + error.message);
@@ -363,13 +352,10 @@ function saveChangesEditClient() {
 }
 
 
-// // Nueva función para cerrar el modal si se hace clic fuera de él
-
 function outsideEditClientModalClick(event) {
     const modalContent = document.querySelector('.modal-content');
     const editClientForm = document.getElementById('editClientForm');
     
-    // Verifica si se hizo clic fuera del formulario
     if (!modalContent.contains(event.target) && !editClientForm.contains(event.target)) {
         closeEditClientModal();
     }

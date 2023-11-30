@@ -72,7 +72,7 @@ function loadProductService(orderBy) {
     // Agregar botón para crear un nuevo ProductService
     const createProductServiceButton = document.createElement('button');
     createProductServiceButton.textContent = 'Crear Nuevo Producto o Servicio';
-    createProductServiceButton.classList.add('btn', 'btn-primary', 'mb-3'); // Agregar clases de Bootstrap
+    createProductServiceButton.classList.add('btn', 'btn-primary', 'mb-3'); 
     createProductServiceButton.addEventListener('click', () => openCreateProductServiceModal());
     createProductServiceButton.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -86,7 +86,7 @@ function showProductService(product_service) {
     const mainContent = document.getElementById('main-content');
 
     const productServiceContainer = document.createElement('div');
-    productServiceContainer.className = 'col-md-4 mb-3'; // Dividir en 3 columnas en pantallas medianas y grandes
+    productServiceContainer.className = 'col-md-4 mb-3'; 
 
     const card = document.createElement('div');
     card.className = 'card';
@@ -102,7 +102,7 @@ function showProductService(product_service) {
     productServiceStock.className = 'card-text';
     productServiceStock.textContent = `Stock: ${parseInt(product_service.stock)}`;
 
-    // Verificar si el tipo es "Servicio" para ocultar el elemento
+    // Verificar si el tipo es "Servicio" para ocultar el elemento stock
     if (product_service.type === 'Servicio') {
         productServiceStock.style.display = 'none';
     }
@@ -151,10 +151,6 @@ function showProductService(product_service) {
     mainContent.appendChild(productServiceContainer);
 }
 
-
-
-
-
 //ELIMINAR PRODUCTO Y SERVICIO
 function deleteProductService(product_service){
 
@@ -187,7 +183,7 @@ function deleteProductService(product_service){
         })
         .catch(error => {
             console.error('Error al guardar cambios:', error.message);
-            // Aquí puedes manejar diferentes tipos de errores
+            
             if (error.message.includes('Bad Request')) {
                 // Manejar el error 400 específico
                 alert('Error 400: ' + error.message);
@@ -223,15 +219,6 @@ function openCreateProductServiceModal() {
     console.log('Abriendo modal para crear un nuevo ProductService');
 }
 
-// Nueva función para cerrar el modal si se hace clic fuera de él
-// function outsideCreateProductServiceModalClick(event) {
-//     const modal = document.getElementById('createProductServiceModal');
-//     const isClickedInsideModal = modal.contains(event.target);
-
-//     if (!isClickedInsideModal) {
-//         closeCreateProductServiceModal();
-//     }
-// }
 
 function outsideCreateProductServiceModalClick(event) {
     const modalContent = document.querySelector('.modal-content');
@@ -242,7 +229,6 @@ function outsideCreateProductServiceModalClick(event) {
         closeCreateProductServiceModal();
     }
 }
-
 
 
 function closeCreateProductServiceModal() {
@@ -260,35 +246,30 @@ function saveChangesCreateProductService() {
     id = localStorage.getItem('id')
 
     const formData = new FormData(document.getElementById('createProductServiceForm'));
-    const data = {};
-
-    
+    const data = {};    
    
     formData.forEach((value, key) => {
         data[key] = value;
     });
 
-    const typeSelect = document.getElementById('createProductServiceType');
-   
+    const typeSelect = document.getElementById('createProductServiceType');   
 
     // Si es un servicio, establece el stock a 1 y deshabilita el campo
     if (typeSelect.value === 'Servicio') {
         if (!formData.get('name') || !formData.get('price') || !formData.get('description') || !formData.get('img') || !formData.get('type')) {
             alert('Por favor, completa todos los campos.');
-            return;  // Detiene la función si algún campo está vacío
+            return;  
         }
     }
     else{
         if (!formData.get('name') || !formData.get('stock') || !formData.get('price') || !formData.get('description') || !formData.get('img') || !formData.get('type')) {
             alert('Por favor, completa todos los campos.');
-            return;  // Detiene la función si algún campo está vacío
+            return; 
         }
     }
-
     
     data.stock = parseInt(formData.get('stock'));
-    data.price = parseFloat(formData.get('price'));
-   
+    data.price = parseFloat(formData.get('price'));   
  
 
     const requestOptions = {
@@ -321,7 +302,7 @@ function saveChangesCreateProductService() {
         })
         .catch(error => {
             console.error('Error al guardar cambios:', error.message);
-            // Aquí puedes manejar diferentes tipos de errores
+            
             if (error.message.includes('Bad Request')) {
                 // Manejar el error 400 específico
                 alert('Error 400: ' + error.message);
@@ -371,15 +352,13 @@ function openEditProductServiceModal(product_service) {
     if (product_service.type === 'Servicio') {
         document.getElementById('editProductServiceStock').disabled = true;
     } else {
-        // Habilitar el campo de stock para otros tipos (como "Producto")
-        document.getElementById('editProductServiceStock').disabled = false;
-    }
+        // Habilitar el campo de stock para "Producto"
+        document.getElementById('editProductServiceStock').disabled = false;    }
 
     modal.style.display = 'block';
-
-    // Agrega eventos al documento y al formulario para prevenir el cierre si se hace clic dentro del modal
     document.addEventListener('click', outsideEditProductServiceModalClick); 
 }
+
 
 function closeEditProductServiceModal() {
     const modal = document.getElementById('editProductServiceModal');
@@ -398,7 +377,6 @@ function saveChangesEditProductService() {
         id_product_service = currentProductServiceId
     }
 
-
     const originalForm = document.getElementById('editProductServiceForm');
     
     // Clonar el formulario para acceder temporalmente a los campos deshabilitados
@@ -410,10 +388,8 @@ function saveChangesEditProductService() {
     });
 
     const formData = new FormData(clonedForm);
-    // const formData = new FormData(document.getElementById('editProductServiceForm'));
     const data = {};
 
-    console.log(data);
      // Verifica si los campos requeridos tienen algún valor
     if (!formData.get('name') || !formData.get('stock') || !formData.get('price') || !formData.get('description')|| !formData.get('img')|| !formData.get('type')) {
         alert('Por favor, completa todos los campos.');
@@ -457,7 +433,6 @@ function saveChangesEditProductService() {
         })
         .catch(error => {
             console.error('Error al guardar cambios:', error.message);
-            // Aquí puedes manejar diferentes tipos de errores
             if (error.message.includes('Bad Request')) {
                 // Manejar el error 400 específico
                 alert('Error 400: ' + error.message);
@@ -479,21 +454,10 @@ function saveChangesEditProductService() {
 }
 
 
-// Nueva función para cerrar el modal si se hace clic fuera de él
-// function outsideEditProductServiceModalClick(event) {
-//     const modal = document.getElementById('editProductServiceModal');
-//     const isClickedInsideModal = modal.contains(event.target);
-
-//     if (!isClickedInsideModal) {
-//         closeEditProductServiceModal();
-//     }
-// }
-
 function outsideEditProductServiceModalClick(event) {
     const modalContent = document.querySelector('.modal-content');
     const editProductServiceForm = document.getElementById('editProductServiceForm');
     
-    // Verifica si se hizo clic fuera del formulario
     if (!modalContent.contains(event.target) && !editProductServiceForm.contains(event.target)) {
         closeEditProductServiceModal();
     }
