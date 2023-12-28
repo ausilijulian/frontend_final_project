@@ -20,18 +20,18 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadClients()">Clientes</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadReceipts()">Facturas</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadProductService()">Productos y Servicios</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadRankings()">Rankings</a>
-              </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadSection('clients')">Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadSection('receipts')">Facturas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadSection('productService')">Productos y Servicios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadSection('rankings')">Rankings</a>
+                </li>
             </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
@@ -286,28 +286,59 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-
     window.onload = function () {
         const token = localStorage.getItem('token');
         if (token) {
             const username = localStorage.getItem('username');
             document.getElementById('username').innerHTML = username;
-        }
-        else {
-            window.location.href = "login.html"
+
+            // Verificar la última sección activa
+            const lastActiveSection = localStorage.getItem('lastActiveSection');
+            if (lastActiveSection) {
+                // Cargar la última sección activa
+                loadSection(lastActiveSection);
+            } else {
+                // Si no hay información sobre la última sección, cargar loadRankings por defecto
+                loadRankings();
+            }
+        } else {
+            window.location.href = "login.html";
         }
     }
 
     function logout() {
-            window.location.href = 'login.html';
-        }
+        // Limpiar la información sobre la última sección al hacer logout
+        localStorage.removeItem('lastActiveSection');
+        window.location.href = 'login.html';
+    }
 
     function clearMain() {
         document.getElementById('main-content').innerHTML = '';
     }
 
+    function loadSection(section) {
+        // Almacenar la información sobre la última sección activa
+        localStorage.setItem('lastActiveSection', section);
 
+        // clearMain();
 
+        // Cargar la sección correspondiente
+        switch (section) {
+            case 'clients':
+                loadClients();
+                break;
+            case 'receipts':
+                loadReceipts();
+                break;
+            case 'productService':
+                loadProductService();
+                break;
+            case 'rankings':
+                loadRankings();
+                break;
+            
+        }
+    }
 </script>
 
 </html>
